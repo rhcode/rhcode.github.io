@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Rohan Honwade&#39;s Blog </title>
+		<link>https://rhcode.github.io/</link>
+		<generator>Hugo -- gohugo.io</generator>
+		<language>en-us</language>
+		<author></author>
+		<rights>Copyright (c) 2019</rights>
+		<updated>2019-01-11 11:12:37 -0800 PST</updated>
+		
+		<item>
+			<title>First Page</title>
+			<link>https://rhcode.github.io/posts/first-page/</link>
+			<pubDate>Fri, 11 Jan 2019 11:12:37 PST</pubDate>
+			<author></author>
+			<guid>https://rhcode.github.io/posts/first-page/</guid>
+			<description>&lt;p&gt;Hello World!&lt;/p&gt;
+</description>
+		</item>
+		
+	</channel>
+</rss>
