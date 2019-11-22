@@ -1,22 +1,35 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
-		<title>Rohan Honwade&#39;s Blog </title>
+		<title>Bits and Bytes </title>
 		<link>https://rhcode.github.io/</link>
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
-		<author></author>
+		<author>Rohan Honwade</author>
 		<rights>Copyright (c) 2019</rights>
-		<updated>2019-01-11 11:12:37 -0800 PST</updated>
+		<updated>2019-11-21 18:34:33 -0800 PST</updated>
 		
 		<item>
-			<title>First Page</title>
-			<link>https://rhcode.github.io/posts/first-page/</link>
-			<pubDate>Fri, 11 Jan 2019 11:12:37 PST</pubDate>
-			<author></author>
-			<guid>https://rhcode.github.io/posts/first-page/</guid>
-			<description>&lt;p&gt;Hello World!&lt;/p&gt;
+			<title>Second</title>
+			<link>https://rhcode.github.io/second/</link>
+			<pubDate>Thu, 21 Nov 2019 18:34:33 PST</pubDate>
+			<author>Rohan Honwade</author>
+			<guid>https://rhcode.github.io/second/</guid>
+			<media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://rhcode.github.io/img/default-header-img.tn-500x500.jpg" medium="image" type="image/jpg" width="100" height="100" />
+			<description>&lt;p&gt;Republican lawmakers on Capitol Hill are working with the White House to prepare for the likely Senate impeachment trial of President Donald Trump, coalescing around the idea that allowing Democrats to lay out their evidence may be the best course of action to protect the President.&lt;/p&gt;
+
+&lt;p&gt;During a Thursday meeting with White House Counsel Pat Cipollone, a group of Republican senators including Mike Lee of Utah, John Kennedy of Louisiana, Lindsey Graham of South Carolina, Tom Cotton of Arkansas and Ted Cruz of Texas, spoke about how a Senate trial should be conducted if the House votes to impeach Trump.
+Lawmakers discussed that Republicans should allow Democrats to make their case with a timeline of two weeks being thrown out as a potential estimate for how long that process could take. However, an aide warned that the two-week timeline was not firm by any stretch and aides and members have been clear that no one is certain how long the process could take.&lt;/p&gt;
 </description>
+		</item>
+		
+		<item>
+			<title>Posts</title>
+			<link>https://rhcode.github.io/posts/</link>
+			<pubDate>Fri, 11 Jan 2019 11:12:37 PST</pubDate>
+			<author>Rohan Honwade</author>
+			<guid>https://rhcode.github.io/posts/</guid>
+			<media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://rhcode.github.io/img/default-header-img.tn-500x500.jpg" medium="image" type="image/jpg" width="100" height="100" />
+			<description></description>
 		</item>
 		
 	</channel>

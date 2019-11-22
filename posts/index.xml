@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Rohan Honwade&#39;s Blog</title>
+    <title>Posts on Bits and Bytes</title>
     <link>https://rhcode.github.io/posts/</link>
-    <description>Recent content in Posts on Rohan Honwade&#39;s Blog</description>
+    <description>Recent content in Posts on Bits and Bytes</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
     <lastBuildDate>Fri, 11 Jan 2019 11:12:37 -0800</lastBuildDate>
     
 	<atom:link href="https://rhcode.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
@@ -17,7 +16,8 @@
       <pubDate>Fri, 11 Jan 2019 11:12:37 -0800</pubDate>
       
       <guid>https://rhcode.github.io/posts/first-page/</guid>
-      <description>Hello World!</description>
+      <description>Charles Schwab Corp. is in talks to buy TD Ameritrade Holding Corp. in a deal that would reshape the discount-brokerage market, where millions of individual investors buy and sell stocks.
+The companies have held on-and-off talks for months and were close to a deal Thursday, though there is still no guarantee they will reach one, people familiar with the matter said. If they do, it would likely value TD Ameritrade at around its current market value of $26 billion.</description>
     </item>
     
   </channel>
