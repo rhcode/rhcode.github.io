@@ -13,7 +13,12 @@
   </url>
   
   <url>
-    <loc>https://rhcode.github.io/second/</loc>
+    <loc>https://rhcode.github.io/posts/</loc>
+    <lastmod>2019-11-21T18:34:33-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://rhcode.github.io/posts/second/</loc>
     <lastmod>2019-11-21T18:34:33-08:00</lastmod>
   </url>
   
@@ -24,11 +29,6 @@
   
   <url>
     <loc>https://rhcode.github.io/posts/first-page/</loc>
-    <lastmod>2019-01-11T11:12:37-08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://rhcode.github.io/posts/</loc>
     <lastmod>2019-01-11T11:12:37-08:00</lastmod>
   </url>
   
