@@ -5,8 +5,18 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
 		<author>Rohan Honwade</author>
-		<rights>Copyright (c) 1</rights>
-		<updated>0001-01-01 00:00:00 &#43;0000 UTC</updated>
+		<rights>Copyright (c) 2019</rights>
+		<updated>2019-11-23 21:26:08 -0800 PST</updated>
+		
+		<item>
+			<title>Posts</title>
+			<link>https://rhcode.github.io/posts/</link>
+			<pubDate>Sat, 23 Nov 2019 21:26:08 PST</pubDate>
+			<author>Rohan Honwade</author>
+			<guid>https://rhcode.github.io/posts/</guid>
+			<media:content xmlns:media="http://search.yahoo.com/mrss/" url="https://rhcode.github.io/img/default-header-img.tn-500x500.jpg" medium="image" type="image/jpg" width="100" height="100" />
+			<description></description>
+		</item>
 		
 	</channel>
 </rss>
