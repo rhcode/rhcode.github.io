@@ -1,34 +1,197 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Argon2 Password Hashing</title><link rel=alternate type=application/rss+xml title=RSS href=https://rhcode.github.io/index.xml><link rel=canonical href=https://rhcode.github.io/posts/argon-password-hashing/><meta name=description content="Password hashing using the Argon2 algorithm"><meta name=generator content="Hugo 0.59.1"><meta property="og:title" content="Argon2 Password Hashing"><meta property="og:type" content="article"><meta property="og:image" content="https://rhcode.github.io/img/default-header-img.jpg"><meta property="og:description" content="Password hashing using the Argon2 algorithm"><meta property="og:url" content="https://rhcode.github.io/posts/argon-password-hashing/"><meta property="og:site_name" content="Argon2 Password Hashing"><meta name=twitter:card content="summary_large_image"><meta name=twitter:site content="@"><link rel=stylesheet href=https://rhcode.github.io/css/tachyons.min.css><link rel=stylesheet href=https://rhcode.github.io/css/story.css><link rel=stylesheet href=https://rhcode.github.io/css/descartes.css><link rel=stylesheet href=https://use.fontawesome.com/releases/v5.3.1/css/all.css integrity=sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU crossorigin=anonymous><link href="https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400i,700,700i|Quattrocento:400,700|Spectral:400,400i,700,700i&amp;subset=latin-ext" rel=stylesheet><script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js></script><script src=https://rhcode.github.io/js/story.js></script><script type=text/javascript async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">MathJax.Hub.Config({tex2jax:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$']],processEscapes:true,processEnvironments:true,skipTags:['script','noscript','style','textarea','pre'],TeX:{equationNumbers:{autoNumber:"AMS"},extensions:["AMSmath.js","AMSsymbols.js"]}}});MathJax.Hub.Queue(function(){var all=MathJax.Hub.getAllJax(),i;for(i=0;i<all.length;i+=1){all[i].SourceElement().parentNode.className+=' has-jax';}});MathJax.Hub.Config({TeX:{equationNumbers:{autoNumber:"AMS"}}});</script></head><body><div class="main-container ma0 bg-white section-posts page-kind-page is-page-true"><header class="cover bg-top" style=background-image:url(https://rhcode.github.io/img/default-header-img.jpg);background-position:50%><div class="bg-black-30 bb bt"><nav class="hide-print sans-serif border-box pa3 ph5-l"><div class="fr h2 pv2 tr"></div></nav><div id=hdr class="tc-l pv4-ns pv5-l pv2 ph3 ph4-ns"><h1 class="near-white mt1-ns f1 fw3 mb0 mt0 lh-title">Argon2 Password Hashing</h1><h2 class="near-white mt3-l mb4-l fw1 f6 f3-l measure-wide-l center lh-copy mt2 mb3">Published
-<time datetime=2019-11-23T21:26:08-08:00>Nov 23, 2019</time>
-<span class=display-print>by Rohan Honwade</span>
-in <a href=https://rhcode.github.io/categories/security class="no-underline category near-white dim">Security</a>
-<span class=display-print>at https://rhcode.github.io/posts/argon-password-hashing/</span></h2></div></div></header><main role=main><article class="center bg-white br-3 pv1 ph4 lh-copy f5 nested-links mw7"><p>I recently had the opportunity to change the password hashing algorithm we used in one of our services. In this post,
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Argon2 Password Hashing</title>
+		<link rel="alternate" type="application/rss+xml" title="RSS" href="https://rhcode.github.io/index.xml">
+		<link rel="canonical" href="https://rhcode.github.io/posts/argon-password-hashing/">
+		
+		<meta name="description" content="Password hashing using the Argon2 algorithm">
+		
+		<meta name="generator" content="Hugo 0.69.0" />
+
+		
+		<meta property="og:title" content="Argon2 Password Hashing" />
+		<meta property="og:type" content="article" />
+		<meta property="og:image" content="https://rhcode.github.io/img/default-header-img.jpg" />
+		<meta property="og:description" content="Password hashing using the Argon2 algorithm" />
+		<meta property="og:url" content="https://rhcode.github.io/posts/argon-password-hashing/" />
+		<meta property="og:site_name" content="Argon2 Password Hashing" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:site" content="@" />
+
+
+		
+		<link rel="stylesheet" href="https://rhcode.github.io/css/tachyons.min.css" />
+		<link rel="stylesheet" href="https://rhcode.github.io/css/story.css" />
+		<link rel="stylesheet" href="https://rhcode.github.io/css/descartes.css" />
+		
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+		<link href="https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400i,700,700i|Quattrocento:400,700|Spectral:400,400i,700,700i&amp;subset=latin-ext" rel="stylesheet">
+		
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		
+		<script src="https://rhcode.github.io/js/story.js"></script>
+		
+	<script type="text/javascript" async
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [['$$','$$']],
+            processEscapes: true,
+            processEnvironments: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            TeX: { equationNumbers: { autoNumber: "AMS" },
+                extensions: ["AMSmath.js", "AMSsymbols.js"] }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        
+        
+        
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+
+    MathJax.Hub.Config({
+        
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+</script>
+
+
+	</head>
+	<body>
+		<div class="main-container ma0 bg-white section-posts page-kind-page is-page-true ">
+		
+		<header class="cover bg-top" style="background-image: url('https://rhcode.github.io/img/default-header-img.jpg'); background-position: center;">
+			<div class="bg-black-30 bb bt">
+
+				<nav class="hide-print sans-serif  border-box pa3 ph5-l">
+					
+					<div class="fr h2 pv2 tr">
+					</div>
+				</nav>
+
+				<div id="hdr" class="tc-l pv4-ns pv5-l pv2 ph3 ph4-ns">
+					<h1 class="near-white mt1-ns f1 fw3 mb0 mt0 lh-title">Argon2 Password Hashing</h1>
+					<h2 class="near-white mt3-l mb4-l fw1 f6 f3-l measure-wide-l center lh-copy mt2 mb3">
+						
+						
+							
+								Published
+								<time datetime="2019-11-23T21:26:08-08:00">Nov 23, 2019</time>
+								<span class="display-print">by Rohan Honwade</span>
+								 in <a href="https://rhcode.github.io/categories/security" class="no-underline category near-white dim">Security</a>
+								<span class="display-print">at https://rhcode.github.io/posts/argon-password-hashing/</span>
+							
+						
+					</h2>
+				</div>
+
+				
+				
+				
+				
+
+			</div>
+		</header>
+		
+		<main role="main">
+		
+<article class="center bg-white br-3 pv1 ph4 lh-copy f5 nested-links mw7">
+	<p>I recently had the opportunity to change the password hashing algorithm we used in one of our services. In this post,
 we briefly compare the older SHA-256 algorithm with a more modern implementation that is Argon2id. I will shed some
 light on some statistics you can use to make the right choice of parameters for the Argon2 algorithm with respect
-to memory cost and compute cost. I have also shared the code snippet I used to carry out my research spike.</p><h2 id=drawbacks-of-sha-256-and-why-argon2>Drawbacks of SHA-256 and why Argon2</h2><p>Up until recently, our legacy service made use of the SHA-256 password hashing algorithm.
-Some points to consider:</p><ul><li>Among the different attributes of a password hashing function, one important attribute is that it should be sloooow. It
+to memory cost and compute cost. I have also shared the code snippet I used to carry out my research spike.</p>
+<h2 id="drawbacks-of-sha-256-and-why-argon2">Drawbacks of SHA-256 and why Argon2</h2>
+<p>Up until recently, our legacy service made use of the SHA-256 password hashing algorithm.
+Some points to consider:</p>
+<ul>
+<li>Among the different attributes of a password hashing function, one important attribute is that it should be sloooow. It
 should be computationally expensive to impede password cracking operations and thus make the life of an adversary more
-difficult. The SHA-256 algorithm can calculate a <a href=https://www.cryptopp.com/benchmarks-amd64.html>hash of about 140 MB per second</a> which is not necessarily slow. To
+difficult. The SHA-256 algorithm can calculate a <a href="https://www.cryptopp.com/benchmarks-amd64.html">hash of about 140 MB per second</a> which is not necessarily slow. To
 give you context, if your password policy allowed only lowercase, uppercase english alphabets and the digits from 0 to 9,
 with a max length of 7 characters, it would take just about 4 days for a single threaded operation to try all the possibilities
-in the UTF-8 character set!</li></ul><p>$$timeInSeconds = {{{(26 + 26 + 10) ^ 7} * (2 * 7)} \over {140 * 10 ^ 6}}$$
-$$timeInDays = {timeInSeconds \over {60 * 60 * 24}} \sim 4$$</p><ul><li>The rise of bitcoin mining has led to the availability of cheap specialized hardware with GPU / FPGA / ASIC which can
+in the UTF-8 character set!</li>
+</ul>
+<p>$$timeInSeconds = {{{(26 + 26 + 10) ^ 7} * (2 * 7)} \over {140 * 10 ^ 6}}$$
+$$timeInDays = {timeInSeconds \over {60 * 60 * 24}} \sim 4$$</p>
+<ul>
+<li>The rise of bitcoin mining has led to the availability of cheap specialized hardware with GPU / FPGA / ASIC which can
 perform computations at much faster rate than our regular CPUs. This has made it possible to generate hashes that
-can be used by lookup tables.</li></ul><p>After discussions with the security team, we decided to use the Argon2i algorithm to generate hashes. It is AES based
+can be used by lookup tables.</li>
+</ul>
+<p>After discussions with the security team, we decided to use the Argon2i algorithm to generate hashes. It is AES based
 which is implemented by most modern x64 and ARM processors in their instruction set extensions leveling the playing
 field between an attacker&rsquo;s hardware and our non-specialized CPUs. The algorithm provides us with knobs to balance the
 tradeoff between how easily a hash is calculated and the amount of compute / memory needed to produce it (security
-and user experience).</p><h2 id=tastes-better-with-salt>Tastes better with salt</h2><p>The reason why we use salts while hashing passwords is so that they randomize the hash that is generated for the same
+and user experience).</p>
+<h2 id="tastes-better-with-salt">Tastes better with salt</h2>
+<p>The reason why we use salts while hashing passwords is so that they randomize the hash that is generated for the same
 input value. So if two users have the same password, their hashes will still be different. This will further slow down
-the process of cracking the password by an adversary.</p><p>In my opinion, there are a couple of drawbacks in the existing systems in terms of how we use and store salts.</p><ul><li>We just store them in the database along with user passwords. So if an adversary has access
+the process of cracking the password by an adversary.</p>
+<p>In my opinion, there are a couple of drawbacks in the existing systems in terms of how we use and store salts.</p>
+<ul>
+<li>We just store them in the database along with user passwords. So if an adversary has access
 to the database table, he has access to the salt. The only additional hurdle he faces is that he has to still calculate
-the new hash value.</li><li>Sometimes people use a common salt for all the passwords that are generated. This in my opinion does not add any
+the new hash value.</li>
+<li>Sometimes people use a common salt for all the passwords that are generated. This in my opinion does not add any
 additional security measure. If the adversary is able to find that out, he has the password hash of all the users who have
-the same password by calculating it just once.</li></ul><p>The use of Argon2 solves 2 problems with respect to salts -</p><p>It internally generates a new salt for each new request to generate a hash. So if you request a hash for the same
+the same password by calculating it just once.</li>
+</ul>
+<p>The use of Argon2 solves 2 problems with respect to salts -</p>
+<p>It internally generates a new salt for each new request to generate a hash. So if you request a hash for the same
 plaintext multiple times, each time you are going to get a different hash.
-Since the salt is handled internally, we don&rsquo;t have to store the unique salts associated with each user in our database.</p><h2 id=statistics-on-argon2-parameters-and-tuning-argon2>Statistics on Argon2 Parameters and tuning Argon2</h2><p>Argon2 uses the following input parameters while calculating a hash -</p><ol><li>Salt length</li><li>Hash length</li><li>Parallelism</li><li>Memory cost</li><li>Iterations</li></ol><p>I carried out a research spike to come up with parameters that could help us have a balance between the difficulty
-involved in coming up with a password hash and the time taken to do it.</p><h3 id=memory-cost>Memory Cost</h3><p>If you observe, the memory cost shoots up when the power increases from 1 &lt;&lt; 17 and upwards.</p><p><img src=/img/posts/mem-cost.png alt="Memory Cost"></p><h3 id=iterations>Iterations</h3><p>There is an exponential increase in the compute required when your parameter value is increased from 1 &lt;&lt; 7 and upwards</p><p><img src=/img/posts/iterations.png alt=Iterations></p><h3 id=hashlength>HashLength</h3><p>The hash length that is generated by the algorithm has no bearing on the amount of time needed to calculate it. What is
+Since the salt is handled internally, we don&rsquo;t have to store the unique salts associated with each user in our database.</p>
+<h2 id="statistics-on-argon2-parameters-and-tuning-argon2">Statistics on Argon2 Parameters and tuning Argon2</h2>
+<p>Argon2 uses the following input parameters while calculating a hash -</p>
+<ol>
+<li>Salt length</li>
+<li>Hash length</li>
+<li>Parallelism</li>
+<li>Memory cost</li>
+<li>Iterations</li>
+</ol>
+<p>I carried out a research spike to come up with parameters that could help us have a balance between the difficulty
+involved in coming up with a password hash and the time taken to do it.</p>
+<h3 id="memory-cost">Memory Cost</h3>
+<p>If you observe, the memory cost shoots up when the power increases from 1 &laquo; 17 and upwards.</p>
+<p><img src="/img/posts/mem-cost.png" alt="Memory Cost"></p>
+<h3 id="iterations">Iterations</h3>
+<p>There is an exponential increase in the compute required when your parameter value is increased from 1 &laquo; 7 and upwards</p>
+<p><img src="/img/posts/iterations.png" alt="Iterations"></p>
+<h3 id="hashlength">HashLength</h3>
+<p>The hash length that is generated by the algorithm has no bearing on the amount of time needed to calculate it. What is
 even more intriguing is that there is a one time fixed cost when we try to generate the hash the first time which
-probably accounts for the big first value in the below graph.</p><p><img src=/img/posts/hash-length.png alt=Hashlength></p><h2 id=code-snippet>Code Snippet</h2><p>Last but not the least, I am also attaching the code snippet I wrote up to run the above tests. It is written in Scala</p><script type=application/javascript src=https://gist.github.com/rhcode/81569eb0a4f8dc9cd5b21c90b9b9f444.js></script><p>Note - you need the following dependencies</p><pre><code>compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.2.0.RELEASE'
+probably accounts for the big first value in the below graph.</p>
+<p><img src="/img/posts/hash-length.png" alt="Hashlength"></p>
+<h2 id="code-snippet">Code Snippet</h2>
+<p>Last but not the least, I am also attaching the code snippet I wrote up to run the above tests. It is written in Scala</p>
+<script type="application/javascript" src="https://gist.github.com/rhcode/81569eb0a4f8dc9cd5b21c90b9b9f444.js"></script>
+
+<p>Note - you need the following dependencies</p>
+<pre><code>compile group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.2.0.RELEASE'
 compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.64'
-</code></pre></article></main><footer class="hide-print sans-serif f6 fw1 bg-black near-white bottom-0 w-100 pa3" role=contentinfo><p class="w-50 near-white">&copy; 2019 Rohan Honwade</p></footer></div></body></html>
+</code></pre>
+</article>
+
+		</main>
+		
+		
+		<footer class="hide-print sans-serif f6 fw1 bg-black near-white bottom-0 w-100 pa3" role="contentinfo">
+			<p class="w-50 near-white">
+				&copy; 2020 Rohan Honwade
+			</p>
+		</footer>
+		
+	</div>
+	
+	
+	</body>
+</html>

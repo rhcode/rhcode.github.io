@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Making Spark Jobs Faster and Error Free</title>
+		<link rel="alternate" type="application/rss+xml" title="RSS" href="https://rhcode.github.io/index.xml">
+		<link rel="canonical" href="https://rhcode.github.io/posts/making-spark-jobs-faster-error-free/">
+		
+		
+		
+		<meta name="generator" content="Hugo 0.69.0" />
+
+		
+		<meta property="og:title" content="Making Spark Jobs Faster and Error Free" />
+		<meta property="og:type" content="article" />
+		<meta property="og:image" content="https://rhcode.github.io/img/default-header-img.jpg" />
+		<meta property="og:description" content="" />
+		<meta property="og:url" content="https://rhcode.github.io/posts/making-spark-jobs-faster-error-free/" />
+		<meta property="og:site_name" content="Making Spark Jobs Faster and Error Free" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:site" content="@" />
+
+
+		
+		<link rel="stylesheet" href="https://rhcode.github.io/css/tachyons.min.css" />
+		<link rel="stylesheet" href="https://rhcode.github.io/css/story.css" />
+		<link rel="stylesheet" href="https://rhcode.github.io/css/descartes.css" />
+		
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+		<link href="https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400i,700,700i|Quattrocento:400,700|Spectral:400,400i,700,700i&amp;subset=latin-ext" rel="stylesheet">
+		
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		
+		<script src="https://rhcode.github.io/js/story.js"></script>
+		
+	<script type="text/javascript" async
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [['$$','$$']],
+            processEscapes: true,
+            processEnvironments: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            TeX: { equationNumbers: { autoNumber: "AMS" },
+                extensions: ["AMSmath.js", "AMSsymbols.js"] }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        
+        
+        
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+
+    MathJax.Hub.Config({
+        
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+</script>
+
+
+	</head>
+	<body>
+		<div class="main-container ma0 bg-white section-posts page-kind-page is-page-true ">
+		
+		<header class="cover bg-top" style="background-image: url('https://rhcode.github.io/img/default-header-img.jpg'); background-position: center;">
+			<div class="bg-black-30 bb bt">
+
+				<nav class="hide-print sans-serif  border-box pa3 ph5-l">
+					
+					<div class="fr h2 pv2 tr">
+					</div>
+				</nav>
+
+				<div id="hdr" class="tc-l pv4-ns pv5-l pv2 ph3 ph4-ns">
+					<h1 class="near-white mt1-ns f1 fw3 mb0 mt0 lh-title">Making Spark Jobs Faster and Error Free</h1>
+					<h2 class="near-white mt3-l mb4-l fw1 f6 f3-l measure-wide-l center lh-copy mt2 mb3">
+						
+						
+							
+								Published
+								<time datetime="2020-04-03T10:23:39-07:00">Apr 3, 2020</time>
+								<span class="display-print">by Rohan Honwade</span>
+								 in <a href="https://rhcode.github.io/categories/big-data-spark" class="no-underline category near-white dim">Big Data, Spark</a>
+								<span class="display-print">at https://rhcode.github.io/posts/making-spark-jobs-faster-error-free/</span>
+							
+						
+					</h2>
+				</div>
+
+				
+				
+				
+				
+
+			</div>
+		</header>
+		
+		<main role="main">
+		
+<article class="center bg-white br-3 pv1 ph4 lh-copy f5 nested-links mw7">
+	<p>Following are a some thoughts I have jotted down to help write Spark jobs that are faster and less prone to issues like Out of Memory errors -</p>
+<h2 id="understand-your-data">Understand your data</h2>
+<p>Get a good understanding about your data before you set about writing any set of transformations and actions on it. By understanding your data,
+I mean the following -</p>
+<ul>
+<li>What is the size of your data?</li>
+<li>Is there any skew in your data? Do a small subset of keys have a large amount of values associated with them? If yes, introducing a
+level of hierarchy in the values can possibly help to get to a more even distribution of data. For example, if your data contains a user id
+which is mapped to a set of followers on a social networking site, a celebrity will have a huge number of followers when compared to a
+random nonentity person. If we hashmod the set of followers into a set of buckets based on hashmod, it will help us avoid one node in the cluster
+getting too much of data where as another node sitting and twiddling its thumbs.</li>
+<li>Are you dealing with a lot of strings in your data? Would it be possible to instead convert them into integers before doing any sort of processing
+on them? String operations are slower than Integer operations. You can hash your strings at the start to get Integer values.</li>
+</ul>
+<h2 id="intentionality-about-spark-configurations">Intentionality about Spark configurations</h2>
+<p>Be explicit about the number of executors, executor cores, executor memory. Have a good understanding about your cluster nodes.</p>
+<ul>
+<li>What is number of cores available on each machine? Set the number of CPU cores associated with each executor by using the
+<code>spark.executor.cores</code> property</li>
+<li>What is the amount of RAM available on each machine? What amount of RAM do you want to give each executor? Set this with <code>spark.executor.memory</code>.</li>
+<li>What is number of partitions of your data? Doing a rough, back-of-the-envelope calculation, will each partition fit into a task?</li>
+<li>Do you want one executor per node? Do you want one executor per core? Do you want to be somewhere in the middle? Having one executor per node, you
+will have too many concurrent tasks trying to read / write out of your underlying datastore. Can your datastore handle that level of parallelism?
+Having one executor per core will not help you take advantage of parallelism in a JVM. You usually want to strike a middle path.</li>
+</ul>
+<h2 id="explicitly-set-executor-memory-overhead-to-be-greater-than-7">Explicitly set executor memory overhead to be greater than 7%</h2>
+<p>If you are running into OOM (Out of Memory) issues, it is possible that you are causing too many function calls in your code. Thread stacks are
+given separate off-heap memory on a node and the default value allocated is 7% of <code>spark.executor.memory</code>. This may not necessarily be enough.
+Try increasing it gradually from 7% to 25%. Just remember that this equation is not violated while you fiddle with this parameters</p>
+<pre><code>executor memory + executor memory overhead &lt; Total memory 
+provided by YARN to each executor
+</code></pre><h2 id="using-partitioners-to-your-advantage-to-try-and-reduce-the-amount-of-shuffling">Using partitioners to your advantage to try and reduce the amount of shuffling</h2>
+<p>Operations that cause shuffling such as <code>reduceByKey</code>, <code>aggregateByKey</code> benefit from data that is already partitioned by a partitioner. If Spark knows
+where a key resides, it can use that information to its advantage and reduce the inter-node network traffic.</p>
+<h2 id="be-careful-about-where-you-use-immutable-scala-collections">Be careful about where you use Immutable Scala collections</h2>
+<p>Don&rsquo;t use immutable collections if you are doing any sort of addition of elements to a collection or concatenating collections. You are better off
+using mutable collections in such places in your code to reduce the number of Java objects created in your Java heap.
+This helps to reduce the amount of JVM pauses.</p>
+<h2 id="fiddle-around-with-partition-sizes-for-your-data">Fiddle around with partition sizes for your data.</h2>
+<p>Partition number is appropriate when you approx size of a partition fits into the JVM heap of an executor. Executor JVM heap size in turn is capped
+by YARN container size limit. Too many partitions just causes job to be overly slow because of the amount of context switching that your
+executor tasks have to do. Too few partitions can cause OOM (Out of Memory) in your tasks. Start with the number of cores and
+increase 1.5 times earlier size</p>
+<h2 id="coalesce-the-smaller-partition--broadcast-the-smaller-partition-before-a-join--cartesian-operation">Coalesce the smaller partition / broadcast the smaller partition before a join / cartesian operation</h2>
+<p>To reduce the amount of shuffling when performing a shuffle intensive operation such as a join or a cartesian product, if one of your RDDs is
+small enough to easily fit into a node, it would be a good idea to broadcast it to all nodes.</p>
+
+</article>
+
+		</main>
+		
+		
+		<footer class="hide-print sans-serif f6 fw1 bg-black near-white bottom-0 w-100 pa3" role="contentinfo">
+			<p class="w-50 near-white">
+				&copy; 2020 Rohan Honwade
+			</p>
+		</footer>
+		
+	</div>
+	
+	
+	</body>
+</html>

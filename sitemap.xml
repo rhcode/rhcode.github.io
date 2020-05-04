@@ -1,1 +1,44 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"><url><loc>https://rhcode.github.io/posts/argon-password-hashing/</loc><lastmod>2019-11-23T21:26:08-08:00</lastmod></url><url><loc>https://rhcode.github.io/categories/</loc><lastmod>2019-11-23T21:26:08-08:00</lastmod></url><url><loc>https://rhcode.github.io/posts/</loc><lastmod>2019-11-23T21:26:08-08:00</lastmod></url><url><loc>https://rhcode.github.io/</loc><lastmod>2019-11-23T21:26:08-08:00</lastmod></url><url><loc>https://rhcode.github.io/categories/security/</loc><lastmod>2019-11-23T21:26:08-08:00</lastmod></url><url><loc>https://rhcode.github.io/tags/</loc></url></urlset>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://rhcode.github.io/categories/big-data-spark/</loc>
+    <lastmod>2020-04-03T10:23:39-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://rhcode.github.io/categories/</loc>
+    <lastmod>2020-04-03T10:23:39-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://rhcode.github.io/posts/making-spark-jobs-faster-error-free/</loc>
+    <lastmod>2020-04-03T10:23:39-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://rhcode.github.io/posts/</loc>
+    <lastmod>2020-04-03T10:23:39-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://rhcode.github.io/</loc>
+    <lastmod>2020-04-03T10:23:39-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://rhcode.github.io/posts/argon-password-hashing/</loc>
+    <lastmod>2019-11-23T21:26:08-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://rhcode.github.io/categories/security/</loc>
+    <lastmod>2019-11-23T21:26:08-08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://rhcode.github.io/tags/</loc>
+  </url>
+  
+</urlset>
