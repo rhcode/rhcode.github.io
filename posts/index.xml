@@ -16,9 +16,7 @@
       <pubDate>Fri, 03 Apr 2020 10:23:39 -0700</pubDate>
       
       <guid>https://rhcode.github.io/posts/making-spark-jobs-faster-error-free/</guid>
-      <description>Following are a some thoughts I have jotted down to help write Spark jobs that are faster and less prone to issues like Out of Memory errors -
-Understand your data Get a good understanding about your data before you set about writing any set of transformations and actions on it. By understanding your data, I mean the following -
- What is the size of your data? Is there any skew in your data?</description>
+      <description>Tips for writing good Spark jobs</description>
     </item>
     
     <item>

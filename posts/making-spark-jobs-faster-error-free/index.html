@@ -7,7 +7,7 @@
 		<link rel="alternate" type="application/rss+xml" title="RSS" href="https://rhcode.github.io/index.xml">
 		<link rel="canonical" href="https://rhcode.github.io/posts/making-spark-jobs-faster-error-free/">
 		
-		
+		<meta name="description" content="Tips for writing good Spark jobs">
 		
 		<meta name="generator" content="Hugo 0.69.0" />
 
@@ -15,7 +15,7 @@
 		<meta property="og:title" content="Making Spark Jobs Faster and Error Free" />
 		<meta property="og:type" content="article" />
 		<meta property="og:image" content="https://rhcode.github.io/img/default-header-img.jpg" />
-		<meta property="og:description" content="" />
+		<meta property="og:description" content="Tips for writing good Spark jobs" />
 		<meta property="og:url" content="https://rhcode.github.io/posts/making-spark-jobs-faster-error-free/" />
 		<meta property="og:site_name" content="Making Spark Jobs Faster and Error Free" />
 		<meta name="twitter:card" content="summary_large_image" />
@@ -105,7 +105,7 @@
 		<main role="main">
 		
 <article class="center bg-white br-3 pv1 ph4 lh-copy f5 nested-links mw7">
-	<p>Following are a some thoughts I have jotted down to help write Spark jobs that are faster and less prone to issues like Out of Memory errors -</p>
+	<p>Following are a some thoughts I have jotted down to help write Spark jobs that are faster and less prone to issues like Out of Memory errors</p>
 <h2 id="understand-your-data">Understand your data</h2>
 <p>Get a good understanding about your data before you set about writing any set of transformations and actions on it. By understanding your data,
 I mean the following -</p>
@@ -114,8 +114,8 @@ I mean the following -</p>
 <li>Is there any skew in your data? Do a small subset of keys have a large amount of values associated with them? If yes, introducing a
 level of hierarchy in the values can possibly help to get to a more even distribution of data. For example, if your data contains a user id
 which is mapped to a set of followers on a social networking site, a celebrity will have a huge number of followers when compared to a
-random nonentity person. If we hashmod the set of followers into a set of buckets based on hashmod, it will help us avoid one node in the cluster
-getting too much of data where as another node sitting and twiddling its thumbs.</li>
+random nonentity person. If we hashmod the set of followers into a set of buckets based on hashmod, it will help us avoid a scenario where
+one node in the cluster gets too much of data where as another node sits twiddling its thumbs.</li>
 <li>Are you dealing with a lot of strings in your data? Would it be possible to instead convert them into integers before doing any sort of processing
 on them? String operations are slower than Integer operations. You can hash your strings at the start to get Integer values.</li>
 </ul>
@@ -144,10 +144,10 @@ where a key resides, it can use that information to its advantage and reduce the
 using mutable collections in such places in your code to reduce the number of Java objects created in your Java heap.
 This helps to reduce the amount of JVM pauses.</p>
 <h2 id="fiddle-around-with-partition-sizes-for-your-data">Fiddle around with partition sizes for your data.</h2>
-<p>Partition number is appropriate when you approx size of a partition fits into the JVM heap of an executor. Executor JVM heap size in turn is capped
-by YARN container size limit. Too many partitions just causes job to be overly slow because of the amount of context switching that your
-executor tasks have to do. Too few partitions can cause OOM (Out of Memory) in your tasks. Start with the number of cores and
-increase 1.5 times earlier size</p>
+<p>Partition number is appropriate when an approximate size of a partition fits into the JVM heap of an executor. Executor JVM heap size in turn is capped
+by YARN container size limit. Too many partitions just causes a job to be overly slow because of the amount of context switching that your
+executor tasks have to do. Too few partitions can cause OOM (Out of Memory) in your tasks. Start out with value equal to the number of cores in your cluster and
+go on increasing 1.5 times earlier size to figure out what fits well in your situation</p>
 <h2 id="coalesce-the-smaller-partition--broadcast-the-smaller-partition-before-a-join--cartesian-operation">Coalesce the smaller partition / broadcast the smaller partition before a join / cartesian operation</h2>
 <p>To reduce the amount of shuffling when performing a shuffle intensive operation such as a join or a cartesian product, if one of your RDDs is
 small enough to easily fit into a node, it would be a good idea to broadcast it to all nodes.</p>
