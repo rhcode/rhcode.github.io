@@ -5,10 +5,19 @@
     <link>https://rhcode.github.io/posts/</link>
     <description>Recent content in Posts on Rohan Honwade</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Fri, 03 Apr 2020 10:23:39 -0700</lastBuildDate>
+    <lastBuildDate>Wed, 24 Jun 2020 16:14:33 -0700</lastBuildDate>
     
 	<atom:link href="https://rhcode.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Apache Arrow Spark&#43;AI Summit 2020</title>
+      <link>https://rhcode.github.io/posts/apache-arrow-sparkai-summit-2020/</link>
+      <pubDate>Wed, 24 Jun 2020 16:14:33 -0700</pubDate>
+      
+      <guid>https://rhcode.github.io/posts/apache-arrow-sparkai-summit-2020/</guid>
+      <description>I attended the Spark+AI summit organized by Databricks this week. Made some notes about Dremio and the Apache Arrow project and invite you to take a read</description>
+    </item>
     
     <item>
       <title>Making Spark Jobs Faster and Error Free</title>
