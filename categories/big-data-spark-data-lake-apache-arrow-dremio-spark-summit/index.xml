@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>big data, spark, data lake, apache arrow, dremio, spark summit on Rohan Honwade</title>
+    <link>https://rhcode.github.io/categories/big-data-spark-data-lake-apache-arrow-dremio-spark-summit/</link>
+    <description>Recent content in big data, spark, data lake, apache arrow, dremio, spark summit on Rohan Honwade</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Wed, 24 Jun 2020 16:14:33 -0700</lastBuildDate>
+    
+	<atom:link href="https://rhcode.github.io/categories/big-data-spark-data-lake-apache-arrow-dremio-spark-summit/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Apache Arrow Spark&#43;AI Summit 2020</title>
+      <link>https://rhcode.github.io/posts/apache-arrow-sparkai-summit-2020/</link>
+      <pubDate>Wed, 24 Jun 2020 16:14:33 -0700</pubDate>
+      
+      <guid>https://rhcode.github.io/posts/apache-arrow-sparkai-summit-2020/</guid>
+      <description>I attended the Spark+AI summit organized by Databricks this week. Made some notes about Dremio and the Apache Arrow project and invite you to take a read</description>
+    </item>
+    
+  </channel>
+</rss>

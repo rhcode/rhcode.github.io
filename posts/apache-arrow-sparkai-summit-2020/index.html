@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Apache Arrow Spark&#43;AI Summit 2020</title>
+		<link rel="alternate" type="application/rss+xml" title="RSS" href="https://rhcode.github.io/index.xml">
+		<link rel="canonical" href="https://rhcode.github.io/posts/apache-arrow-sparkai-summit-2020/">
+		
+		<meta name="description" content="How can we make querying from Data Lakes faster? Some notes I made about Dremio and Apache Arrow after attending the Spark&#43;AI Summit 2020">
+		
+		<meta name="generator" content="Hugo 0.69.0" />
+
+		
+		<meta property="og:title" content="Apache Arrow Spark&#43;AI Summit 2020" />
+		<meta property="og:type" content="article" />
+		<meta property="og:image" content="https://rhcode.github.io/img/default-header-img.jpg" />
+		<meta property="og:description" content="How can we make querying from Data Lakes faster? Some notes I made about Dremio and Apache Arrow after attending the Spark&#43;AI Summit 2020" />
+		<meta property="og:url" content="https://rhcode.github.io/posts/apache-arrow-sparkai-summit-2020/" />
+		<meta property="og:site_name" content="Apache Arrow Spark&#43;AI Summit 2020" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:site" content="@" />
+
+
+		
+		<link rel="stylesheet" href="https://rhcode.github.io/css/tachyons.min.css" />
+		<link rel="stylesheet" href="https://rhcode.github.io/css/story.css" />
+		<link rel="stylesheet" href="https://rhcode.github.io/css/descartes.css" />
+		
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+		<link href="https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400i,700,700i|Quattrocento:400,700|Spectral:400,400i,700,700i&amp;subset=latin-ext" rel="stylesheet">
+		
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		
+		<script src="https://rhcode.github.io/js/story.js"></script>
+		
+	<script type="text/javascript" async
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [['$$','$$']],
+            processEscapes: true,
+            processEnvironments: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            TeX: { equationNumbers: { autoNumber: "AMS" },
+                extensions: ["AMSmath.js", "AMSsymbols.js"] }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        
+        
+        
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+
+    MathJax.Hub.Config({
+        
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+</script>
+
+
+	</head>
+	<body>
+		<div class="main-container ma0 bg-white section-posts page-kind-page is-page-true ">
+		
+		<header class="cover bg-top" style="background-image: url('https://rhcode.github.io/img/default-header-img.jpg'); background-position: center;">
+			<div class="bg-black-30 bb bt">
+
+				<nav class="hide-print sans-serif  border-box pa3 ph5-l">
+					
+					<div class="fr h2 pv2 tr">
+					</div>
+				</nav>
+
+				<div id="hdr" class="tc-l pv4-ns pv5-l pv2 ph3 ph4-ns">
+					<h1 class="near-white mt1-ns f1 fw3 mb0 mt0 lh-title">Apache Arrow Spark+AI Summit 2020</h1>
+					<h2 class="near-white mt3-l mb4-l fw1 f6 f3-l measure-wide-l center lh-copy mt2 mb3">
+						
+						
+							
+								Published
+								<time datetime="2020-06-24T16:14:33-07:00">Jun 24, 2020</time>
+								<span class="display-print">by Rohan Honwade</span>
+								 in <a href="https://rhcode.github.io/categories/big-data-spark-data-lake-apache-arrow-dremio-spark-summit" class="no-underline category near-white dim">Big Data, Spark, Data Lake, Apache Arrow, Dremio, Spark Summit</a>
+								<span class="display-print">at https://rhcode.github.io/posts/apache-arrow-sparkai-summit-2020/</span>
+							
+						
+					</h2>
+				</div>
+
+				
+				
+				
+				
+
+			</div>
+		</header>
+		
+		<main role="main">
+		
+<article class="center bg-white br-3 pv1 ph4 lh-copy f5 nested-links mw7">
+	<p>The Spark + AI summit for 2020 is currently happening from June 22nd to June 26th. There were talks by big names in the industry like Matei Zaharia
+and even by Nate Silver from fivethirtyeight.com. There were multiple topics being talked about simultaneously and it was a difficult to just
+pick one to listen to as all of them seemed interesting! I took some time to listen to Tomer Shiran, the founder of the Dremio project about the origins,
+the need and use cases of Apache Arrow and how they used it in Dremio alongside the Apache Arrow Gandiva.</p>
+<h2 id="the-data-querying-conundrum-in-data-lakes-paradigm">The data querying conundrum in Data Lakes paradigm</h2>
+<p>Data Lakes are the talk of the town today! In today&rsquo;s age where data is the chief asset that companies prize, they don&rsquo;t want to lose any of it
+and would rather have it stored in a Data Lake even if it does not make much sense to them right now, with the prospect of it being useful at a
+later point in time. That very point makes the data unwieldy.</p>
+<p>In such a scenario, when your data store has vast amounts of data, querying becomes slow because it is not just that the data is big but that
+transferring data over the network when you query such stores also becomes a non-trivial factor. To get around this problem, companies again
+copy part of their data from the Data Lake into Data Warehousing solutions like AWS Redshift. They then construct their OLAP cubes and
+aggregations on top of this for fast querying of the underlying data. The drawback of this is that the flexibility of doing anything else with
+this data reduces as you copy it into the Data Warehouse. This is the problem that the folks at Dremio / Apache Arrow are trying to solve -
+how do you query your data directly from the Data Lake without having to copy it anywhere else?</p>
+<h2 id="dremio">Dremio</h2>
+<p>The folks at Dremio claim that they have built technology to query Data Lakes with 4 to 100 times better performance than existing solutions. The
+way they were able to do it is by defining and implementing a new standard - Apache Arrow, of storing data in-memory in a columnar format for efficient
+operations on today&rsquo;s hardware. I will talk more about Apache Arrow later in this article.</p>
+<p>Following are some features that power Dremio -</p>
+<h3 id="data-reflections">Data Reflections</h3>
+<p>Dremio creates a view of your data, an optimized data structure that lends itself well to boost different query patterns. This data structure can
+also auto refresh itself.</p>
+<h3 id="columnar-cloud-cache-c3">Columnar Cloud Cache (C3)</h3>
+<p>The Columnar Cloud Cache feature takes advantage of local storage (generally NVMe - non-volatile memory express) for a distributed real time
+caching solution that increases the amount of read throughput and reduces the amount of data transferred over the network. It is automatic, does
+not need any user involvement and caches data based on SQL query patterns, workload management and file directory structures to optimize what to
+store and evict.</p>
+<h3 id="predictive-pipelining">Predictive Pipelining</h3>
+<p>Dremio can predict access patterns of data which reduces its query response times. Based on usage patterns of analytical workloads and their understanding
+of columnar data format, the Dremio folks provide this feature wherein they fetch data only before execution engine needs it.</p>
+<h2 id="difference-between-dremio-and-facebooks-presto">Difference between Dremio and Facebook&rsquo;s Presto</h2>
+<p>Presto by Facebook is a distributed SQL engine over multiple data sources. Dremio offers more features on top of that. It sits between your
+data over disparate sources and you who want an analysis of your data - it squashes the need for data warehousing solutions, OLAP cubes,
+extracts and aggregations.</p>
+<ul>
+<li>Dremio claims to offer speeds of interactive nature with data of any volume</li>
+<li>It has deep integrations with some data stores and is thus able to push down some compute when queries are made over those data sources</li>
+<li>It is able to show how different datasets are related to each other by creating a lineage of data</li>
+</ul>
+<h2 id="apache-arrow">Apache Arrow</h2>
+<p>Apache Arrow is a specification for storing data in a columnar format in memory, serializing the metadata and for transferring data over the network.
+It uses Google Flatbuffers for metadata serialization. It was born out of Dremio&rsquo;s internal memory format.</p>
+<p>It provides constant time random access, data adjacency for sequential scans and lends itself easily for SIMD (single instruction, multiple data)
+class of instructions in modern processors.</p>
+<p>It serializes data as Arrow buffers / vectors which are basically arrays of the same size with different data types. This whole package together
+constitutes its schema.</p>
+<h2 id="gandiva">Gandiva</h2>
+<p>Gandiva is a part of Dremio which provides a high performance execution engine over Apache Arrow data buffers. Gandiva takes a sql expression,
+compiles it into LLVM bytecode and translates it to machine code. To get this high performance it is written in C++.</p>
+<p>Tomer wrapped up the talk on Dremio with a demo of the platform as well.</p>
+<p>Go give Dremio a try!</p>
+
+</article>
+
+		</main>
+		
+		
+		<footer class="hide-print sans-serif f6 fw1 bg-black near-white bottom-0 w-100 pa3" role="contentinfo">
+			<p class="w-50 near-white">
+				&copy; 2020 Rohan Honwade
+			</p>
+		</footer>
+		
+	</div>
+	
+	
+	</body>
+</html>
